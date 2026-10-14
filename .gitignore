@@ -1,15 +1,20 @@
+# Jekyll build output and caches
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# Bundler
+vendor/
+.bundle/
+
+# Editors
+*.swp
+*.swo
+*.orig
+.idea/
+.vscode/
+
 # OS
 .DS_Store
 Thumbs.db
-
-# IDEs
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# Environment
-.env
-.env.*
-
-# Build (add project-specific rules below)

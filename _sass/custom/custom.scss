@@ -1,0 +1,21 @@
+.nav-list .nav-list-link {
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+}
+
+// The URL comes from --scg-logo-dark, which _includes/head_custom.html sets.
+// It cannot be written literally here: Sass is not processed by Liquid, so a
+// hard-coded "/assets/..." path would break when the site is served from a
+// sub-path.
+.theme-dark img[src*="Secure_Coding_Guidelines_Logo"] {
+  content: var(--scg-logo-dark);
+}
+
+// Separate the external links (nav_external_links) from the guideline navigation
+// with some breathing room and a horizontal rule.
+.site-nav > .nav-list > .nav-list-item.external:first-child {
+  margin-top: $sp-3;
+  padding-top: $sp-3;
+  border-top: $border $border-color;
+}

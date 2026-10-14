@@ -1,0 +1,80 @@
+---
+name: Build
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      # Build with a non-empty baseurl so that any link which is not
+      # baseurl-aware shows up as a failure here rather than on the live site.
+      - name: Build site
+        run: bundle exec jekyll build --baseurl "/preview" --trace
+
+      - name: Check that every internal link carries the baseurl
+        run: |
+          set -euo pipefail
+
+          # HTML attributes: href="/..." and src="/..."
+          stray_html=$(grep -rhoE '(href|src)="/[^"]*"' _site --include='*.html' \
+            | sed 's/^[a-z]*="//; s/"$//' \
+            | grep -v '^/preview' \
+            | sort -u || true)
+
+          # CSS url(/...) - Sass is not processed by Liquid, so a hard-coded
+          # absolute path here silently 404s on a sub-path deployment.
+          stray_css=$(grep -rhoE "url\(['\"]?/[^)'\"]*" _site --include='*.css' \
+            | sed "s/^url(['\"]\?//" \
+            | grep -v '^/preview' \
+            | sort -u || true)
+
+          if [[ -n "$stray_html" || -n "$stray_css" ]]; then
+            echo 'These internal references ignore the baseurl and will break'
+            echo 'when the site is served from a sub-path:'
+            echo
+            [[ -n "$stray_html" ]] && { echo 'In HTML:'; echo "$stray_html"; echo; }
+            [[ -n "$stray_css" ]] && { echo 'In CSS:'; echo "$stray_css"; echo; }
+            echo "In Markdown/HTML use: {{ '/path.html' | relative_url }}"
+            echo 'In Sass use a CSS custom property set from _includes/head_custom.html'
+            exit 1
+          fi
+
+          echo 'All internal references are baseurl-aware.'
+
+      - name: Check that every policy has a matching test
+        run: |
+          set -euo pipefail
+
+          policies=$(find _includes/policies -name 'seccop-SCP-*.md' -printf '%f\n' \
+            | sed 's/^seccop-SCP-//; s/\.md$//' | sort)
+          tests=$(find _includes/testing -name 'seccot-SCPT-*.md' -printf '%f\n' \
+            | sed 's/^seccot-SCPT-//; s/\.md$//' | sort)
+
+          if [[ "$policies" != "$tests" ]]; then
+            echo 'Policies and tests are not paired 1:1.'
+            diff --label policies --label tests -u \
+              <(echo "$policies") <(echo "$tests") || true
+            exit 1
+          fi
+
+          echo "All $(echo "$policies" | wc -l) policies have a matching test."

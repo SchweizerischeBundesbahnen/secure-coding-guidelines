@@ -1,0 +1,23 @@
+<style>
+  /* Sass files are not processed by Liquid, so the dark-mode logo URL is
+     injected here as a custom property. This keeps it correct when the site
+     is served from a sub-path (GitHub Pages project sites). */
+  :root {
+    --scg-logo-dark: url('{{ "/assets/images/Secure_Coding_Guidelines_Logo_dark.jpg" | relative_url }}');
+  }
+</style>
+
+<script>
+  (function () {
+    try {
+      var stored = localStorage.getItem('jtd-color-scheme');
+      if (stored === 'dark' || stored === 'light') {
+        var link = document.querySelector('link[rel="stylesheet"][href*="just-the-docs-"]');
+        if (link) {
+          link.setAttribute('href', link.getAttribute('href').replace(/just-the-docs-[a-z]+\.css/, 'just-the-docs-' + stored + '.css'));
+        }
+        document.documentElement.classList.toggle('theme-dark', stored === 'dark');
+      }
+    } catch (e) { /* ignore */ }
+  })();
+</script>
