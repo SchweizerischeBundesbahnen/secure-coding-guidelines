@@ -8,8 +8,8 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
+  pages: read
+  id-token: read
 
 # Allow one concurrent deployment, without cancelling one already in progress.
 concurrency:
