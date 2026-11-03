@@ -1,0 +1,27 @@
+title: Secure Coding Guidelines
+description: >-
+  Secure Coding Guidelines for Java and Spring Boot
+baseurl: ""
+url: ""
+favicon_ico: "/assets/images/favicon.ico"
+logo: "/assets/images/logo.png"
+theme: just-the-docs
+plugins:
+  - jekyll-feed
+
+permalink: pretty
+search_enabled: true
+heading_anchors: true
+
+# Repository metadata files. They belong in the repository, not in the
+# published site.
+exclude:
+  - CODE_OF_CONDUCT.md
+  - CONTENT_ISSUES.md
+  - CONTRIBUTING.md
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README.md
+  - vendor/
+

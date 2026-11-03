@@ -1,12 +1,18 @@
 ---
 version: 2
 updates:
+  # GitHub Actions used by the build and deploy workflows.
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
       interval: weekly
-  # Add ecosystem-specific entries below, for example:
-  # - package-ecosystem: npm
-  #   directory: "/"
-  #   schedule:
-  #     interval: weekly
+    commit-message:
+      prefix: "chore(deps)"
+
+  # Ruby dependencies: Jekyll and the Just the Docs theme.
+  - package-ecosystem: bundler
+    directory: "/"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "chore(deps)"

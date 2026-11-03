@@ -1,0 +1,39 @@
+<div class="jtd-theme-toggle-wrapper" style="padding: 0.75rem 1rem; border-top: 1px solid rgba(128,128,128,0.2);">
+  <!--button type="button"
+          class="btn js-toggle-dark-mode"
+          aria-label="Toggle dark mode"
+          title="Toggle dark mode"
+          style="width: 100%;">
+    <span class="jtd-theme-icon" aria-hidden="true">&#9789;</span>
+  </button-->
+  <div class="jtd-template-license-link" style="margin-top: 0.5rem; text-align: center; font-size: 0.75rem;">
+    <a href="{{ '/license.html' | relative_url }}"
+       title="License information (content: CC BY 4.0, template: MIT)">License</a>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var btn = document.querySelector('.js-toggle-dark-mode');
+    if (!btn) return;
+
+    function applyLabel(theme) {
+      var icon = btn.querySelector('.jtd-theme-icon');
+      if (icon) icon.innerHTML = theme === 'dark' ? '&#9728;' : '&#9789;';
+      btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+      btn.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+
+    var initial = (typeof jtd !== 'undefined' && jtd.getTheme) ? jtd.getTheme() : 'light';
+    applyLabel(initial);
+
+    btn.addEventListener('click', function () {
+      if (typeof jtd === 'undefined') return;
+      var next = jtd.getTheme() === 'dark' ? 'light' : 'dark';
+      jtd.setTheme(next);
+      document.documentElement.classList.toggle('theme-dark', next === 'dark');
+      try { localStorage.setItem('jtd-color-scheme', next); } catch (e) { /* ignore */ }
+      applyLabel(next);
+    });
+  })();
+</script>
