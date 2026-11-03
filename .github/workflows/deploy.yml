@@ -8,8 +8,6 @@ on:
 
 permissions:
   contents: read
-  pages: read
-  id-token: read
 
 # Allow one concurrent deployment, without cancelling one already in progress.
 concurrency:
@@ -20,6 +18,9 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
@@ -55,6 +56,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
