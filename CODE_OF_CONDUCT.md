@@ -59,9 +59,9 @@ representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported privately to the maintainers of this repository. Use the
-"Report content" function on GitHub, or contact the maintainers through the
-private channel listed on the repository profile.
+reported privately to the maintainers of this repository. Contact the private
+maintainer at <appsec-team@sbb.ch>, or use the "Report content" function on
+GitHub.
 
 All complaints will be reviewed and investigated promptly and fairly. All
 community leaders are obligated to respect the privacy and security of the
